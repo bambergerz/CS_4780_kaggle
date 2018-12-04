@@ -8,8 +8,7 @@ def capitalized_word_counts(tweets):
     """
     
     :param tweets: n x 1 vector in which entry i represents the text of the i'th tweet. i.e., each entry is a string. 
-    :return: n x 1 vector in which entry i represents the number of capitalized words in the i'th tweet, normalized to
-    be between 0 and 1
+    :return: n x 1 vector in which entry i represents the number of capitalized words in the i'th tweet, normalized
     """
     vals = np.zeros(tweets.shape[0])
     for i in range(tweets.shape[0]):
@@ -27,8 +26,7 @@ def number_of_hastags(tweets):
     """
     
     :param tweets: n x 1 vector in which entry i represents the text of the i'th tweet. i.e., each entry is a string. 
-    :return: n x 1 vector in which entry i represents the number of hashtags in the i'th tweet. Normalized to be 
-    between 0 and 1
+    :return: n x 1 vector in which entry i represents the number of hashtags in the i'th tweet, normalized
     """
     vals = np.zeros(tweets.shape[0])
     for i in range(tweets.shape[0]):
@@ -42,8 +40,7 @@ def tweet_length(tweets):
     """
     
     :param tweets: n x 1 vector in which entry i represents the text of the i'th tweet. i.e., each entry is a string. 
-    :return: n x 1 vector in which entry i represents the length (in number of words) of the i'th tweet. Normalized 
-    to be between 0 and 1. 
+    :return: n x 1 vector in which entry i represents the length (in number of words) of the i'th tweet, normalized
     """
     vals = np.zeros(tweets.shape[0])
     for i in range(tweets.shape[0]):
@@ -57,8 +54,7 @@ def favorite_count(tweets):
     """
     
     :param tweets: an n x 1 vector in which each entry i represents the favorite count of tweet i
-    :return: a normalized n x 1 vector in which each entry i represents the favorite count of tweet i, but such that
-    the value is between 0 and 1
+    :return: a normalized n x 1 vector in which each entry i represents the favorite count of tweet i, normalized.
     """
     return (tweets - np.mean(tweets)) / np.var(tweets)
 
@@ -67,8 +63,7 @@ def retweet_count(tweets):
     """
     
     :param tweets: an n x 1 vector in which each entry i represents the retweet count of tweet i
-    :return: a normalized n x 1 vector in which each entry i represents the retweet count of tweet i, but such that
-    the value is between 0 and 1
+    :return: a normalized n x 1 vector in which each entry i represents the retweet count of tweet i, normalized
     """
     return (tweets - np.mean(tweets)) / np.var(tweets)
 
@@ -77,8 +72,7 @@ def tweet_id(tweets):
     """
     
     :param tweets: an n x 1 vector in which each entry i is the int representing the ID of tweet indexed i
-    :return: a normalized n x 1 vector in which each entry i represents the normalized ID of tweet indexed i, but also
-    such that the value is between 0 and 1.
+    :return: a normalized n x 1 vector in which each entry i represents the normalized ID of tweet indexed i, normalized
     """
     return (tweets - np.mean(tweets)) / np.var(tweets)
 
