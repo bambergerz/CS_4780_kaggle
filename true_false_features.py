@@ -16,7 +16,7 @@ def is_favorited(favorited_column):
     vals = np.zeros(favorited_column.shape[0])
     for i in range(favorited_column.shape[0]):
         v = favorited_column[i]
-        if v = "TRUE":
+        if v == "TRUE":
         	vals[i] = 1
     return vals
 
@@ -32,16 +32,12 @@ def is_trunc(trunc_column):
     vals = np.zeros(trunc_column.shape[0])
     for i in range(trunc_column.shape[0]):
         v = trunc_column[i]
-        if v = "TRUE":
+        if v == "TRUE":
         	vals[i] = 1
     return vals
 
 def bytes_to_float(b):
-	"""
-	: param b: string to hash
-	: return: float between 0 and 1
-	"""
-    return float(crc32(b) & 0xffffffff) / 2**32
+	return float(crc32(b) & 0xffffffff) / 2**32
 
 def is_tagged(tweets):
     """
