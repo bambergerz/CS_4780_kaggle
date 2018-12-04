@@ -80,16 +80,16 @@ def tweet_id(tweets):
 def tweet_date(tweets):
     """
     
-    :param tweets: an n x 1 vector in which each entry i is a string of the form {month}/{day}/{year} 
+    :param tweets: an n x 1 array in which each entry i is a string of the form {month}/{day}/{year}
     representing the date in which tweet i was released. 
     :return: a n x 1 vector in which each entry i represents the numerical time in which tweet indexed i was
     tweeted. 
     """
-    vals = np.zeros(tweets.shape[0])
-    for i in range(tweets.shape[0]):
+    vals = np.zeros(len(tweets))
+    for i in range(len(tweets)):
         tweet = tweets[i]
         month, day, year = tweet.split("/")
-        time = datetime.datetime(year=int(year),
+        time = datetime.datetime(year=(2000 + int(year)),
                                  month=int(month),
                                  day=int(day))
         val = time.timestamp()
@@ -104,8 +104,8 @@ def tweet_time(tweets):
     representing the time at which tweet i was released. 
     :return: a  n x 1 vector in which each entry i represents the time in which tweet indexed i was tweeted. 
     """
-    vals = np.zeros(tweets.shape[0])
-    for i in range(tweets.shape[0]):
+    vals = np.zeros(len(tweets))
+    for i in range(len(tweets)):
         tweet = tweets[i]
         hour, minute = tweet.split(":")
         val = 60 * int(hour) + int(minute)
@@ -121,13 +121,13 @@ def tweet_date_time(tweets):
                 represents the time in which tweet i was released
     :return: date and time vectors as described in the outputs of tweet_time and tweet_date
     """
-    dates = np.zeros(tweets.shape[0])
-    times = np.zeros(tweets.shape[0])
+    dates = []
+    times = []
     for i in range(tweets.shape[0]):
         tweet = tweets[i]
         date, time = tweet.split()
-        dates[i] = date
-        times[i] = time
+        dates.append(date)
+        times.append(time)
     return tweet_date(dates), tweet_time(times)
 
 

@@ -97,16 +97,16 @@ def is_URL(tweets):
         	vals[i] = hashed_num
     return vals
 
-class MyParser(HTMLParser):
-    def __init__(self, output_list=None):
-        HTMLParser.__init__(self)
-        if output_list is None:
-            self.output_list = []
-        else:
-            self.output_list = output_list
-    def handle_starttag(self, tag, attrs):
-        if tag == 'a':
-            self.output_list.append(dict(attrs).get('href'))
+# class MyParser(HTMLParser):
+#     def __init__(self, output_list=None):
+#         HTMLParser.__init__(self)
+#         if output_list is None:
+#             self.output_list = []
+#         else:
+#             self.output_list = output_list
+#     def handle_starttag(self, tag, attrs):
+#         if tag == 'a':
+#             self.output_list.append(dict(attrs).get('href'))
 
 
 

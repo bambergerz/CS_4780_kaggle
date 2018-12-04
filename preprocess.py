@@ -10,31 +10,6 @@ from continuous_features import *
 from true_false_features import *
 
 
-if __name__ == "__main__":
-
-    xDF = pd.read_csv(filepath_or_buffer="train.csv")
-    xDF = xDF.drop("id", 1)
-    X = xDF.values
-
-    print("Titles: " + str(xDF.columns.values) + "\n")
-
-    yDF = xDF.pop("label")
-    Y = yDF.values
-
-    # TODO: k-fold cross validation here
-    xTr, xVer, yTr, yVer = train_test_split(X, Y, test_size=0.8)
-
-    ### SVM ###
-
-    #word_embeddings = get_embeddings()
-    #svm.svm_eval(xTr, yTr)
-
-    #example of pandas to numpy conversion
-    #print(X[0])  # 0 is the text column, indexed by column number
-    print(X[:, 0])
-    #print(capitalized_word_counts())
-
-
 def get_features(X):
     """
 
@@ -63,9 +38,9 @@ def get_features(X):
     t_word_count = number_of_hastags(TEXT)
     t_num_words = tweet_length(TEXT)
     t_num_hashtags = number_of_hastags(TEXT)
-    t_tag_scores = is_tagged(TEXT)                      # TODO: confirm with Neel
-    t_hashtags = has_hashtag(TEXT)                      # TODO: confirm with Neel
-    t_is_tweet_url = is_URL(TEXT)                       # TODO: confirm with Neel
+    # t_tag_scores = is_tagged(TEXT)                      # TODO: confirm with Neel
+    # t_hashtags = has_hashtag(TEXT)                      # TODO: confirm with Neel
+    # t_is_tweet_url = is_URL(TEXT)                       # TODO: confirm with Neel
     t_is_favorited_tweet = is_favorited(FAVORITED)
     t_is_trunc_tweet = is_trunc(TRUNCATED)
     t_date, t_time = tweet_date_time(CREATED)
@@ -73,20 +48,48 @@ def get_features(X):
     t_retweet_count = retweet_count(RETWEET_COUNT)
     t_favorite_count = favorite_count(FAVORITE_COUNT)
 
-    xTr = np.concatenate((t_word_count,
-                          t_num_words,
-                          t_num_hashtags,
-                          t_tag_scores,
-                          t_hashtags,
-                          t_is_tweet_url,
-                          t_is_favorited_tweet,
-                          t_is_trunc_tweet,
-                          t_date,
-                          t_time,
-                          t_id,
-                          t_retweet_count,
-                          t_favorite_count),
-                         axis=1)
-
+    xTr = np.matrix((t_word_count,
+                     t_num_words,
+                     t_num_hashtags,
+                     # t_tag_scores,
+                     # t_hashtags,
+                     # t_is_tweet_url,
+                     t_is_favorited_tweet,
+                     t_is_trunc_tweet,
+                     t_date,
+                     t_time,
+                     t_id,
+                     t_retweet_count,
+                     t_favorite_count)).T
     return xTr
+
+
+if __name__ == "__main__":
+
+    xDF = pd.read_csv(filepath_or_buffer="train.csv")
+    xDF = xDF.drop("id", 1)
+    X = xDF.values
+
+    print("Titles: " + str(xDF.columns.values) + "\n")
+
+    yDF = xDF.pop("label")
+    Y = yDF.values
+
+    # TODO: k-fold cross validation here
+    xTr, xVer, yTr, yVer = train_test_split(X, Y, test_size=0.8)
+
+    xTr = get_features(xTr)
+    data = pd.DataFrame(xTr)
+    print(data)
+
+    ### SVM ###
+
+    #word_embeddings = get_embeddings()
+    #svm.svm_eval(xTr, yTr)
+
+    #example of pandas to numpy conversion
+    #print(X[0])  # 0 is the text column, indexed by column number
+    # print(X[:, 0])
+    #print(capitalized_word_counts())
+
 
