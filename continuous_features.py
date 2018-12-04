@@ -11,7 +11,6 @@ def capitalized_word_counts(tweets):
     :return: n x 1 vector in which entry i represents the number of capitalized words in the i'th tweet, normalized to
     be between 0 and 1
     """
-    max_capitalized_words = 0
     vals = np.zeros(tweets.shape[0])
     for i in range(tweets.shape[0]):
         tweet = tweets[i]
@@ -20,10 +19,8 @@ def capitalized_word_counts(tweets):
         for word in words:
             if word[0].isUpper():
                 capitalized_count += 1
-        if capitalized_count > max_capitalized_words:
-            max_capitalized_words = capitalized_count
         vals[i] = capitalized_count
-    return vals / max_capitalized_words
+    return (vals - np.mean(vals)) / np.var(vals)
 
 
 def number_of_hastags(tweets):
@@ -33,15 +30,12 @@ def number_of_hastags(tweets):
     :return: n x 1 vector in which entry i represents the number of hashtags in the i'th tweet. Normalized to be 
     between 0 and 1
     """
-    max_hashtags = 0
     vals = np.zeros(tweets.shape[0])
     for i in range(tweets.shape[0]):
         tweet = tweets[i]
         count = tweet.count("#")
-        if count > max_hashtags:
-            max_hashtags = count
         vals[i] = count
-    return vals / max_hashtags
+    return (vals - np.mean(vals)) / np.var(vals)
 
 
 def tweet_length(tweets):
@@ -51,15 +45,12 @@ def tweet_length(tweets):
     :return: n x 1 vector in which entry i represents the length (in number of words) of the i'th tweet. Normalized 
     to be between 0 and 1. 
     """
-    max_len = 0
     vals = np.zeros(tweets.shape[0])
     for i in range(tweets.shape[0]):
         tweet = tweets[i]
         count = len(tweet.split())
-        if count > max_len:
-            max_len = count
         vals[i] = count
-    return vals / max_len
+    return (vals - np.mean(vals)) / np.var(vals)
 
 
 def favorite_count(tweets):
@@ -69,8 +60,7 @@ def favorite_count(tweets):
     :return: a normalized n x 1 vector in which each entry i represents the favorite count of tweet i, but such that
     the value is between 0 and 1
     """
-    max_entry = np.amax(tweets)
-    return tweets / max_entry
+    return (tweets - np.mean(tweets)) / np.var(tweets)
 
 
 def retweet_count(tweets):
@@ -80,8 +70,7 @@ def retweet_count(tweets):
     :return: a normalized n x 1 vector in which each entry i represents the retweet count of tweet i, but such that
     the value is between 0 and 1
     """
-    max_entry = np.amax(tweets)
-    return tweets / max_entry
+    return (tweets - np.mean(tweets)) / np.var(tweets)
 
 
 def tweet_id(tweets):
@@ -91,8 +80,7 @@ def tweet_id(tweets):
     :return: a normalized n x 1 vector in which each entry i represents the normalized ID of tweet indexed i, but also
     such that the value is between 0 and 1.
     """
-    max_entry = np.amax(tweets)
-    return tweets / max_entry
+    return (tweets - np.mean(tweets)) / np.var(tweets)
 
 
 def tweet_date(tweets):
