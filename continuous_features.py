@@ -150,11 +150,19 @@ def tweet_date_time(tweets):
 
 
 def tweet_loc(lat, long):
+    # TODO: finish this method
+    # TODO: find out how to find distance between two points where each point is defined with (lat, long)
     url = "http://maps.googleapis.com/maps/api/geocode/json?"
     url += "latlng=%s,%s&sensor=false" % (lat, long)
     v = urlopen(url).read()
     j = json.loads(v)
     print(j)
+
+
+# Feature ideas:
+#   1) Distance from NYC
+#   2) Distance from White House
+#   3) Distance from Maralago
 
 
 if __name__ == "__main__":
