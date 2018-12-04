@@ -6,6 +6,7 @@ import nltk
 import gensim
 from nltk.corpus import brown
 from sklearn.model_selection import train_test_split
+from continuous_features import *
 
 # Local imports
 import svm
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     xDF = xDF.drop("id", 1)
     X = xDF.values
 
-    print("Titles: " + str(xDF.columns.values))
+    print("Titles: " + str(xDF.columns.values) + "\n")
 
     yDF = xDF.pop("label")
     Y = yDF.values
@@ -40,5 +41,35 @@ if __name__ == "__main__":
 
     ### SVM ###
 
-    word_embeddings = get_embeddings()
-    svm.svm_eval(xTr, yTr)
+    #word_embeddings = get_embeddings()
+    #svm.svm_eval(xTr, yTr)
+
+    #example of pandas to numpy conversion
+    #print(X[0])  # 0 is the text column, indexed by column number
+    print(X[:, 0])
+    #print(capitalized_word_counts())
+
+    #columns in the csv
+    TEXT           = X[:, 0]
+    FAVORITED      = X[:, 1]
+    FAVORITE_COUNT = X[:, 2]
+    REPLY_TO_SN    = X[:, 3]
+    CREATED        = X[:, 4]
+    TRUNCATED      = X[:, 5]
+    REPLY_TO_SID   = X[:, 6]
+    ID             = X[:, 7]
+    REPLY_TO_UID   = X[:, 8]
+    STATUS_SOURCE  = X[:, 9]
+    SCREEN_NAME    = X[:, 10]
+    RETWEET_COUNT  = X[:, 11]
+    IS_RETWEET     = X[:, 12]
+    RETWEETED      = X[:, 13]
+    LONGITUDE      = X[:, 14]
+    LATITUDE       = X[:, 15]
+    LABEL          = X[:, 16]
+    print(RETWEETED)
+
+    """'text' 'favorited' 'favoriteCount' 'replyToSN' 'created' 'truncated'
+    'replyToSID' 'id.1' 'replyToUID' 'statusSource' 'screenName'
+    'retweetCount' 'isRetweet' 'retweeted' 'longitude' 'latitude' 'label']"""
+
