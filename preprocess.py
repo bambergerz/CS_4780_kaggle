@@ -67,7 +67,7 @@ if __name__ == "__main__":
     LONGITUDE      = X[:, 14]
     LATITUDE       = X[:, 15]
     LABEL          = X[:, 16]
-    print(RETWEETED)
+    #print(STATUS_SOURCE)
 
     """'text' 'favorited' 'favoriteCount' 'replyToSN' 'created' 'truncated'
     'replyToSID' 'id.1' 'replyToUID' 'statusSource' 'screenName'
