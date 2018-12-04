@@ -20,6 +20,9 @@ def get_embeddings():
     model.save("brown.embedding")
     return model
 
+def get_average_trump_embedding(xTr):
+    pass
+
 
 if __name__ == "__main__":
 
