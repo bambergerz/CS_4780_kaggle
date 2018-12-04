@@ -1,5 +1,7 @@
 import numpy as np
 import datetime
+import json
+from urllib.request import urlopen
 
 
 def capitalized_word_counts(tweets):
@@ -145,4 +147,20 @@ def tweet_date_time(tweets):
         dates[i] = date
         times[i] = time
     return tweet_date(dates), tweet_time(times)
+
+
+def tweet_loc(lat, long):
+    url = "http://maps.googleapis.com/maps/api/geocode/json?"
+    url += "latlng=%s,%s&sensor=false" % (lat, long)
+    v = urlopen(url).read()
+    j = json.loads(v)
+    print(j)
+
+
+if __name__ == "__main__":
+    lat_1 = 40.77010669
+    lat_2 = 40.77737697
+    long_1 = -73.88530464
+    long_2 = -73.88530464
+    tweet_loc(lat_1, long_1)
 
