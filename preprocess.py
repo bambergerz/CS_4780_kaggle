@@ -2,27 +2,12 @@
 import os
 import numpy as np
 import pandas as pd
-import nltk
-import gensim
-from nltk.corpus import brown
 from sklearn.model_selection import train_test_split
-from continuous_features import *
 
 # Local imports
 import svm
-
-
-# General pre-processing methods
-def get_embeddings():
-    if "brown.embedding" in os.listdir(os.getcwd()):
-        return gensim.models.Word2Vec.load('brown.embedding')
-    nltk.download("brown")
-    model = gensim.models.Word2Vec(brown.sents())
-    model.save("brown.embedding")
-    return model
-
-def get_average_trump_embedding(xTr):
-    pass
+from continuous_features import *
+from true_false_features import *
 
 
 if __name__ == "__main__":
@@ -49,7 +34,13 @@ if __name__ == "__main__":
     print(X[:, 0])
     #print(capitalized_word_counts())
 
-    #columns in the csv
+
+def get_features(X):
+    """
+
+    :param X:
+    :return:
+    """
     TEXT           = X[:, 0]
     FAVORITED      = X[:, 1]
     FAVORITE_COUNT = X[:, 2]
@@ -69,7 +60,33 @@ if __name__ == "__main__":
     LABEL          = X[:, 16]
     #print(STATUS_SOURCE)
 
-    """'text' 'favorited' 'favoriteCount' 'replyToSN' 'created' 'truncated'
-    'replyToSID' 'id.1' 'replyToUID' 'statusSource' 'screenName'
-    'retweetCount' 'isRetweet' 'retweeted' 'longitude' 'latitude' 'label']"""
+    t_word_count = number_of_hastags(TEXT)
+    t_num_words = tweet_length(TEXT)
+    t_num_hashtags = number_of_hastags(TEXT)
+    t_tag_scores = is_tagged(TEXT)                      # TODO: confirm with Neel
+    t_hashtags = has_hashtag(TEXT)                      # TODO: confirm with Neel
+    t_is_tweet_url = is_URL(TEXT)                       # TODO: confirm with Neel
+    t_is_favorited_tweet = is_favorited(FAVORITED)
+    t_is_trunc_tweet = is_trunc(TRUNCATED)
+    t_date, t_time = tweet_date_time(CREATED)
+    t_id = tweet_id(ID)
+    t_retweet_count = retweet_count(RETWEET_COUNT)
+    t_favorite_count = favorite_count(FAVORITE_COUNT)
+
+    xTr = np.concatenate((t_word_count,
+                          t_num_words,
+                          t_num_hashtags,
+                          t_tag_scores,
+                          t_hashtags,
+                          t_is_tweet_url,
+                          t_is_favorited_tweet,
+                          t_is_trunc_tweet,
+                          t_date,
+                          t_time,
+                          t_id,
+                          t_retweet_count,
+                          t_favorite_count),
+                         axis=1)
+
+    return xTr
 
