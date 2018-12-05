@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 
 # Local imports
 import svm
+import random_forest
 from continuous_features import *
 from true_false_features import *
 
@@ -86,8 +87,8 @@ if __name__ == "__main__":
     ### SVM ###
 
     #word_embeddings = get_embeddings()
-    models = svm.generate_svm_classifiers(xTr, yTr)
-
+    # models = svm.generate_svm_classifiers(xTr, yTr)
+    model = random_forest.generate_rf_classifiers(xTr, yTr)
     #example of pandas to numpy conversion
     #print(X[0])  # 0 is the text column, indexed by column number
     # print(X[:, 0])
