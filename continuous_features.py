@@ -140,24 +140,44 @@ def tweet_loc(lats, longs):
     with open("data.json", "r") as fileHandle:
         d = json.load(fileHandle)
 
-    unique_loc_names = set()
-    unique_state_names = set()
-    unique_county_names = set()
-    unique_country_names = set()
+    unique_loc_names     = {}
+    unique_state_names   = {}
+    unique_county_names  = {}
+    unique_country_names = {}
+
+    vals = []
 
     for i in range(lats.shape[0]):
         lat = lats[i]
         long = longs[i]
+        val = [0,0,0,0]
 
         loc_name = d[(lat, long)]["name"]
         state_name = d[(lat, long)]["admin1"]
         county_name = d[(lat, long)]["admin2"]
         country_name = d[(lat, long)]["cc"]
 
-        unique_loc_names.add(loc_name)
-        unique_state_names.add(state_name)
-        unique_county_names.add(county_name)
-        unique_country_names.add(country_name)
+        #https://stackoverflow.com/questions/26263682/python-add-to-dictionary-loop
+
+        #pseudocode
+        # for each of the dicts
+        # if loc_name in unique_loc_names:
+        #
+
+        #add to val
+        val[0] = unique_loc_names[loc_name] #this contains a number
+        val[1] = unique_state_names[state_name]
+        val[2] = unique_county_names[county_name]
+        val[3] = unique_country_names[country_name]
+        # unique_country_names.add(country_name)
+
+        vals.append(val)
+
+
+    loc_names_enums    = set()
+    state_name_enums   = set()
+    county_name_enums  = set()
+    country_name_enums = set()
 
 
 # Feature ideas:
