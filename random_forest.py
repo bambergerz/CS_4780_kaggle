@@ -8,9 +8,15 @@ import pickle
 
 ### Random Forest ###
 
-def generate_svm_classifiers(xTr, yTr):
-    clf=RandomForestClassifier(n_estimators=10)
-    clf.fit(xTr,yTr)
-    pickle.dump(clf, "randomForest.model")
+def generate_rf_classifiers(xTr, yTr):
+    n = 10
+    print("Generating classifier")
+    clf = RandomForestClassifier(n_estimators=n)
+    print("Fitting classifier")
+    clf.fit(xTr, yTr)
+    print("Done fitting random forest model. Saving model")
+    s = pickle.dumps(clf)
+    with open("rf_" + str(n) + ".pickle", 'wb') as fileHandle:
+        fileHandle.write(s)
     print("All done!!!")
     return clf
