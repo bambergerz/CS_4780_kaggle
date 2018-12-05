@@ -1,14 +1,12 @@
 # Libraries
-import os
-import numpy as np
 import pandas as pd
+import os
 from sklearn.model_selection import train_test_split
 
 # Local imports
-import svm
-import random_forest
-from continuous_features import *
-from true_false_features import *
+from models import random_forest
+from feature_extraction.continuous_features import *
+from feature_extraction.true_false_features import *
 
 
 def get_features(X):
@@ -67,9 +65,11 @@ def get_features(X):
 
 if __name__ == "__main__":
 
+    os.chdir("data")
     xDF = pd.read_csv(filepath_or_buffer="train.csv")
     xDF = xDF.drop("id", 1)
     X = xDF.values
+    os.chdir("..")
 
     print("Titles: " + str(xDF.columns.values) + "\n")
 
