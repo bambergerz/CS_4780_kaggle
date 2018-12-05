@@ -7,18 +7,18 @@ import os
 
 ### SVM ###
 
-def svm_eval(xTr, yTr):
+def generate_svm_classifiers(xTr, yTr):
     kernel_types = ["linear", "poly", "rbf", "sigmoid"]
     classifiers = []
     for k_type in kernel_types:
+        print("training " + k_type + " SVM model...")
         # enable probability to True for bootstrapping
         c = svm.SVC(kernel=k_type, probability=True)
-
-        # TODO: normalize data so that everything is a float.
-        # That way, can fit SVM model
-
         c.fit(xTr, yTr)
         classifiers.append(c)
+        print("Done!\n")
+    print("All done!!!")
+    return classifiers
 
 
 

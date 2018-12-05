@@ -38,9 +38,9 @@ def get_features(X):
     t_word_count = number_of_hastags(TEXT)
     t_num_words = tweet_length(TEXT)
     t_num_hashtags = number_of_hastags(TEXT)
-    # t_tag_scores = is_tagged(TEXT)                      # TODO: confirm with Neel
-    # t_hashtags = has_hashtag(TEXT)                      # TODO: confirm with Neel
-    # t_is_tweet_url = is_URL(TEXT)                       # TODO: confirm with Neel
+    t_tag_scores = is_tagged(TEXT)                      # TODO: confirm with Neel
+    t_hashtags = has_hashtag(TEXT)                      # TODO: confirm with Neel
+    t_is_tweet_url = is_URL(TEXT)                       # TODO: confirm with Neel
     t_is_favorited_tweet = is_favorited(FAVORITED)
     t_is_trunc_tweet = is_trunc(TRUNCATED)
     t_date, t_time = tweet_date_time(CREATED)
@@ -51,9 +51,9 @@ def get_features(X):
     xTr = np.matrix((t_word_count,
                      t_num_words,
                      t_num_hashtags,
-                     # t_tag_scores,
-                     # t_hashtags,
-                     # t_is_tweet_url,
+                     t_tag_scores,
+                     t_hashtags,
+                     t_is_tweet_url,
                      t_is_favorited_tweet,
                      t_is_trunc_tweet,
                      t_date,
@@ -81,11 +81,12 @@ if __name__ == "__main__":
     xTr = get_features(xTr)
     data = pd.DataFrame(xTr)
     print(data)
+    print("\n")
 
     ### SVM ###
 
     #word_embeddings = get_embeddings()
-    #svm.svm_eval(xTr, yTr)
+    models = svm.generate_svm_classifiers(xTr, yTr)
 
     #example of pandas to numpy conversion
     #print(X[0])  # 0 is the text column, indexed by column number
