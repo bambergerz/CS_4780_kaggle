@@ -160,8 +160,6 @@ def tweet_loc(lats, longs):
         unique_country_names.add(country_name)
 
 
-
-
 # Feature ideas:
 #   1) Distance from NYC
 #   2) Distance from White House
