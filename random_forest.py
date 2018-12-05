@@ -1,4 +1,4 @@
-from sklearn import svm
+from sklearn.ensemble import RandomForestClassifier
 import gensim
 import nltk
 from nltk.corpus import brown
