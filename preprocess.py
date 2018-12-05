@@ -2,6 +2,7 @@
 import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
+import pickle
 
 # Local imports
 from models import random_forest
@@ -88,7 +89,22 @@ if __name__ == "__main__":
 
     #word_embeddings = get_embeddings()
     # models = svm.generate_svm_classifiers(xTr, yTr)
-    model = random_forest.generate_rf_classifiers(xTr, yTr)
+
+    ### Random Forest ###
+    # models = random_forest.generate_rf_classifiers(xTr, yTr)
+    models = []
+    cwd = os.getcwd()
+    os.chdir("data")
+    os.chdir("random_forest_models")
+    files = os.listdir(os.getcwd())
+    for file in files:
+        with open(file, "rb") as fileHandle:
+            s = fileHandle.read()
+            model = pickle.loads(s)
+            models.append(model)
+    model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
+    print(model_scores)
+
     #example of pandas to numpy conversion
     #print(X[0])  # 0 is the text column, indexed by column number
     # print(X[:, 0])
