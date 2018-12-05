@@ -38,7 +38,7 @@ def is_trunc(trunc_column):
 
 def bytes_to_float(b):
     c = b.encode()
-	return float(crc32(c) & 0xffffffff) / 2**32
+    return float(crc32(c) & 0xffffffff) / 2**32
 
 def is_tagged(tweets):
     """
