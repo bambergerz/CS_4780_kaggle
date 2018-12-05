@@ -9,8 +9,8 @@ import pickle
 ### Random Forest ###
 
 def generate_svm_classifiers(xTr, yTr):
-    clf=RandomForestClassifier(n_estimators=100)
-    clf.fit(X_train,y_train)
+    clf=RandomForestClassifier(n_estimators=10)
+    clf.fit(xTr,yTr)
     pickle.dump(clf, "randomForest.model")
     print("All done!!!")
     return clf
