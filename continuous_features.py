@@ -1,5 +1,6 @@
 import numpy as np
 import datetime
+
 import json
 from urllib.request import urlopen
 
@@ -131,14 +132,34 @@ def tweet_date_time(tweets):
     return tweet_date(dates), tweet_time(times)
 
 
-def tweet_loc(lat, long):
+def tweet_loc(lats, longs):
     # TODO: finish this method
     # TODO: find out how to find distance between two points where each point is defined with (lat, long)
-    url = "http://maps.googleapis.com/maps/api/geocode/json?"
-    url += "latlng=%s,%s&sensor=false" % (lat, long)
-    v = urlopen(url).read()
-    j = json.loads(v)
-    print(j)
+
+    assert lats.shape == longs.shape, "inconsistent shape between lattitude and longitude vectors"
+    with open("data.json", "r") as fileHandle:
+        d = json.load(fileHandle)
+
+    unique_loc_names = set()
+    unique_state_names = set()
+    unique_county_names = set()
+    unique_country_names = set()
+
+    for i in range(lats.shape[0]):
+        lat = lats[i]
+        long = longs[i]
+
+        loc_name = d[(lat, long)]["name"]
+        state_name = d[(lat, long)]["admin1"]
+        county_name = d[(lat, long)]["admin2"]
+        country_name = d[(lat, long)]["cc"]
+
+        unique_loc_names.add(loc_name)
+        unique_state_names.add(state_name)
+        unique_county_names.add(county_name)
+        unique_country_names.add(country_name)
+
+
 
 
 # Feature ideas:
@@ -152,5 +173,5 @@ if __name__ == "__main__":
     lat_2 = 40.77737697
     long_1 = -73.88530464
     long_2 = -73.88530464
-    tweet_loc(lat_1, long_1)
+    # tweet_loc(lat_1, long_1)
 
