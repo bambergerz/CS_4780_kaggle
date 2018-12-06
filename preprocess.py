@@ -66,6 +66,21 @@ def get_features(X):
     return xTr
 
 
+def predict_test(models, model_scores):
+    cwd = os.getcwd()
+    os.chdir("data")
+    xDF = pd.read_csv(filepath_or_buffer="test.csv")
+    xDF = xDF.drop("id", 1)
+    X = xDF.values
+    os.chdir("..")
+    xTe = get_features(X)
+    i = np.argmax(np.array(model_scores))
+    best_model = models[i]
+    output = pd.DataFrame(best_model.predict(xTe))
+    print(output)
+    # with open("predictions.csv", "w") as fileHandle:
+
+
 if __name__ == "__main__":
 
     os.chdir("data")
@@ -106,6 +121,9 @@ if __name__ == "__main__":
     model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
     print("model scores are: \n" + str(model_scores))
     print("max accuracy was: " + str(max(model_scores)))
+
+    predict_test(models, model_scores)
+
 
     #example of pandas to numpy conversion
     #print(X[0])  # 0 is the text column, indexed by column number

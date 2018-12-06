@@ -15,7 +15,6 @@ def sentiment(tweets):
 
     vals = np.zeros(tweets.shape[0])
 
-
     analyser = SentimentIntensityAnalyzer()
     for i in range(tweets.shape[0]):
         sentence = tweets[i]
