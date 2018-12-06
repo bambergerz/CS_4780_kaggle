@@ -1,13 +1,13 @@
 # Libraries
-import os
-import numpy as np
 import pandas as pd
+import os
 from sklearn.model_selection import train_test_split
+import pickle
 
 # Local imports
-import svm
-from continuous_features import *
-from true_false_features import *
+from models import random_forest
+from feature_extraction.continuous_features import *
+from feature_extraction.true_false_features import *
 
 
 def get_features(X):
@@ -47,6 +47,7 @@ def get_features(X):
     t_id = tweet_id(ID)
     t_retweet_count = retweet_count(RETWEET_COUNT)
     t_favorite_count = favorite_count(FAVORITE_COUNT)
+    t_sentiment_score = sentiment(TEXT)
 
     xTr = np.matrix((t_word_count,
                      t_num_words,
@@ -60,15 +61,18 @@ def get_features(X):
                      t_time,
                      t_id,
                      t_retweet_count,
-                     t_favorite_count)).T
+                     t_favorite_count
+                     t_sentiment_score)).T
     return xTr
 
 
 if __name__ == "__main__":
 
+    os.chdir("data")
     xDF = pd.read_csv(filepath_or_buffer="train.csv")
     xDF = xDF.drop("id", 1)
     X = xDF.values
+    os.chdir("..")
 
     print("Titles: " + str(xDF.columns.values) + "\n")
 
@@ -86,7 +90,22 @@ if __name__ == "__main__":
     ### SVM ###
 
     #word_embeddings = get_embeddings()
-    models = svm.generate_svm_classifiers(xTr, yTr)
+    # models = svm.generate_svm_classifiers(xTr, yTr)
+
+    ### Random Forest ###
+    # models = random_forest.generate_rf_classifiers(xTr, yTr)
+    models = []
+    cwd = os.getcwd()
+    os.chdir("data")
+    os.chdir("random_forest_models")
+    files = os.listdir(os.getcwd())
+    for file in files:
+        with open(file, "rb") as fileHandle:
+            s = fileHandle.read()
+            model = pickle.loads(s)
+            models.append(model)
+    model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
+    print(model_scores)
 
     #example of pandas to numpy conversion
     #print(X[0])  # 0 is the text column, indexed by column number
