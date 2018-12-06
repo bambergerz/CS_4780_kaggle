@@ -25,15 +25,12 @@ def get_features(X):
     REPLY_TO_SID   = X[:, 6]
     ID             = X[:, 7]
     REPLY_TO_UID   = X[:, 8]
-    STATUS_SOURCE  = X[:, 9]
-    SCREEN_NAME    = X[:, 10]
-    RETWEET_COUNT  = X[:, 11]
-    IS_RETWEET     = X[:, 12]
-    RETWEETED      = X[:, 13]
-    LONGITUDE      = X[:, 14]
-    LATITUDE       = X[:, 15]
-    LABEL          = X[:, 16]
-    #print(STATUS_SOURCE)
+    SCREEN_NAME    = X[:, 9]
+    RETWEET_COUNT  = X[:, 10]
+    IS_RETWEET     = X[:, 11]
+    RETWEETED      = X[:, 12]
+    LONGITUDE      = X[:, 13]
+    LATITUDE       = X[:, 14]
 
     t_word_count = number_of_hastags(TEXT)
     t_num_words = tweet_length(TEXT)
@@ -68,6 +65,7 @@ def get_features(X):
 
 def predict_test(models, model_scores):
     cwd = os.getcwd()
+    print("cwd: " + cwd)
     os.chdir("data")
     xDF = pd.read_csv(filepath_or_buffer="test.csv")
     xDF = xDF.drop("id", 1)
@@ -83,6 +81,7 @@ def predict_test(models, model_scores):
 
 if __name__ == "__main__":
 
+    cwd = os.getcwd()
     os.chdir("data")
     xDF = pd.read_csv(filepath_or_buffer="train.csv")
     xDF = xDF.drop("id", 1)
@@ -107,7 +106,8 @@ if __name__ == "__main__":
     # models = svm.generate_svm_classifiers(xTr, yTr)
 
     ### Random Forest ###
-    #models = random_forest.generate_rf_classifiers(xTr, yTr) #UNCOMMENT THIS WHEN ADDING FEATURES
+    os.chdir(cwd)
+    models = random_forest.generate_rf_classifiers(xTr, yTr) #UNCOMMENT THIS WHEN ADDING FEATURES
     models = []
     cwd = os.getcwd()
     os.chdir("data")
@@ -118,6 +118,7 @@ if __name__ == "__main__":
             s = fileHandle.read()
             model = pickle.loads(s)
             models.append(model)
+    os.chdir(cwd)
     model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
     print("model scores are: \n" + str(model_scores))
     print("max accuracy was: " + str(max(model_scores)))
