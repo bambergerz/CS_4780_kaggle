@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # models = svm.generate_svm_classifiers(xTr, yTr)
 
     ### Random Forest ###
-    models = random_forest.generate_rf_classifiers(xTr, yTr)
+    #models = random_forest.generate_rf_classifiers(xTr, yTr) #UNCOMMENT THIS WHEN ADDING FEATURES
     models = []
     cwd = os.getcwd()
     os.chdir("data")
