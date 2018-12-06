@@ -19,7 +19,7 @@ def sentiment(tweets):
     for i in range(tweets.shape[0]):
         sentence = tweets[i]
         score = analyser.polarity_scores(sentence)
-        vals[i] = score["compound"]
+        vals[i] = score["neg"]
 
     return vals
 

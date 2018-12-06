@@ -17,7 +17,7 @@ def generate_svm_classifiers(xTr, yTr):
         c = svm.SVC(kernel=k_type, probability=True)
         c.fit(xTr, yTr)
         classifiers.append(c)
-        pickle.dump(c, k_type + "_svm.model")
+        #pickle.dump(c, k_type + "_svm.model")  COMMENTED OUT 11:31
         print("Done!\n")
     print("All done!!!")
     return classifiers

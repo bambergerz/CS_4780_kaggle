@@ -4,7 +4,8 @@ import os
 from sklearn.model_selection import train_test_split
 import pickle
 from sklearn.ensemble import RandomForestClassifier
-
+from models import svm
+from models import logistic_regression
 
 # Local imports
 from models import random_forest
@@ -52,19 +53,20 @@ def get_features(X):
     t_sentiment_score = sentiment(TEXT)
 
     xTr = np.matrix((t_word_count,
-                     t_num_words,
+                     #t_num_words,
                      t_num_hashtags,
-                     t_tag_scores,
-                     t_hashtags,
-                     t_is_tweet_url,
-                     t_is_favorited_tweet,
-                     t_is_trunc_tweet,
-                     t_date,
-                     t_time,
-                     t_id,
-                     t_retweet_count,
-                     t_favorite_count,
-                     t_sentiment_score)).T
+                     # t_tag_scores,
+                     # t_hashtags,
+                      t_is_tweet_url,
+                     # t_is_favorited_tweet,
+                     # t_is_trunc_tweet,
+                     # t_date,
+                      #t_time,
+                     # t_id,
+                      t_retweet_count,
+                      t_favorite_count,
+                      t_sentiment_score
+                     )).T
     return xTr
 
 def get_features_test(X):
@@ -104,19 +106,20 @@ def get_features_test(X):
     t_sentiment_score = sentiment(TEXT)
 
     xTr = np.matrix((t_word_count,
-                     t_num_words,
+                     #t_num_words,
                      t_num_hashtags,
-                     t_tag_scores,
-                     t_hashtags,
+                     #t_tag_scores,
+                     #t_hashtags,
                      t_is_tweet_url,
-                     t_is_favorited_tweet,
-                     t_is_trunc_tweet,
-                     t_date,
-                     t_time,
-                     t_id,
+                     #t_is_favorited_tweet,
+                     #t_is_trunc_tweet,
+                     #t_date,
+                     #t_time,
+                     #t_id,
                      t_retweet_count,
                      t_favorite_count,
-                     t_sentiment_score)).T
+                     t_sentiment_score
+                     )).T
     return xTr
 
 
@@ -182,24 +185,27 @@ if __name__ == "__main__":
     xVer = get_features(xVer)
 
 
+    ## LOGISTIC REGRESSION ##
+    models = [logistic_regression.generate_log_classifiers(xTr, yTr)] #made it a list
+
     ### SVM ###
 
     #word_embeddings = get_embeddings()
-    # models = svm.generate_svm_classifiers(xTr, yTr)
+    #models = svm.generate_svm_classifiers(xTr, yTr)
 
     ### Random Forest ###
-    os.chdir(cwd)
-    models = random_forest.generate_rf_classifiers(xTr, yTr) #UNCOMMENT THIS WHEN ADDING FEATURES
-    models = []
-    cwd = os.getcwd()
-    os.chdir("data")
-    os.chdir("random_forest_models")
-    files = os.listdir(os.getcwd())
-    for file in files:
-        with open(file, "rb") as fileHandle:
-            s = fileHandle.read()
-            model = pickle.loads(s)
-            models.append(model)
+    # os.chdir(cwd)
+    # models = random_forest.generate_rf_classifiers(xTr, yTr) #UNCOMMENT THIS WHEN ADDING FEATURES
+    # models = []
+    # cwd = os.getcwd()
+    # os.chdir("data")
+    # os.chdir("random_forest_models")
+    # files = os.listdir(os.getcwd())
+    # for file in files:
+    #     with open(file, "rb") as fileHandle:
+    #         s = fileHandle.read()
+    #         model = pickle.loads(s)
+    #         models.append(model)
     model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
     os.chdir(cwd)
 
@@ -207,9 +213,7 @@ if __name__ == "__main__":
     print("max accuracy was: " + str(max(model_scores)))
 
     predict_test(models, model_scores)
-    submission_full()
-
-
+    #submission_full()
 
 
     #example of pandas to numpy conversion
