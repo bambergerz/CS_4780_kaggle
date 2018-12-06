@@ -3,6 +3,8 @@ import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
 import pickle
+from sklearn.ensemble import RandomForestClassifier
+
 
 # Local imports
 from models import random_forest
@@ -87,7 +89,7 @@ def get_features_test(X):
     LONGITUDE      = X[:, 13]
     LATITUDE       = X[:, 14]
 
-    t_word_count = number_of_hastags(TEXT)
+    t_word_count = capitalized_word_counts(TEXT)
     t_num_words = tweet_length(TEXT)
     t_num_hashtags = number_of_hastags(TEXT)
     t_tag_scores = is_tagged(TEXT)                      # TODO: confirm with Neel
@@ -126,11 +128,37 @@ def predict_test(models, model_scores):
     X = xDF.values
     xTe = get_features_test(X)
     i = np.argmax(np.array(model_scores))
+    print("i is", i)
     best_model = models[i]
     output = pd.DataFrame(best_model.predict(xTe), columns=['label'])
     with open("predictions.csv", "w") as fileHandle:
         output.to_csv(fileHandle)
     os.chdir(cwd)
+
+
+def submission_full():
+    cwd = os.getcwd()
+    os.chdir("data")
+    xDF = pd.read_csv(filepath_or_buffer="train.csv")
+    xDF = xDF.drop("id", 1)
+    X = xDF.values
+    yDF = xDF.pop("label")
+    Y = yDF.values
+    xTr = get_features(X)
+
+    clf_bootstrap = RandomForestClassifier(n_estimators=60, bootstrap=True)
+    clf_bootstrap.fit(xTr, Y)
+
+    xDF_test = pd.read_csv(filepath_or_buffer="test.csv")
+    xDF_test = xDF_test.drop("id", 1)
+    X_test = xDF_test.values
+    xTe = get_features_test(X_test)
+
+    output = pd.DataFrame(clf_bootstrap.predict(xTe), columns=['label'])
+    with open("full_predictions.csv", "w") as fileHandle:
+        output.to_csv(fileHandle)
+    os.chdir(cwd)
+
 
 
 if __name__ == "__main__":
@@ -172,12 +200,16 @@ if __name__ == "__main__":
             s = fileHandle.read()
             model = pickle.loads(s)
             models.append(model)
-    os.chdir(cwd)
     model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
+    os.chdir(cwd)
+
     print("model scores are: \n" + str(model_scores))
     print("max accuracy was: " + str(max(model_scores)))
 
     predict_test(models, model_scores)
+    submission_full()
+
+
 
 
     #example of pandas to numpy conversion

@@ -17,7 +17,7 @@ def capitalized_word_counts(tweets):
         words = tweet.split()
         capitalized_count = 0
         for word in words:
-            if word[0].isUpper():
+            if word[0].isupper():
                 capitalized_count += 1
         vals[i] = capitalized_count
     return (vals - np.mean(vals)) / np.var(vals)
