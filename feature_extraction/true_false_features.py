@@ -22,6 +22,8 @@ def sentiment(tweets):
         score = analyser.polarity_scores(sentence)
         vals[i] = score["compound"]
 
+    return vals
+
 
 def is_favorited(favorited_column):
     """
