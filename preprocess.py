@@ -61,7 +61,7 @@ def get_features(X):
                      t_time,
                      t_id,
                      t_retweet_count,
-                     t_favorite_count
+                     t_favorite_count,
                      t_sentiment_score)).T
     return xTr
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # models = svm.generate_svm_classifiers(xTr, yTr)
 
     ### Random Forest ###
-    # models = random_forest.generate_rf_classifiers(xTr, yTr)
+    models = random_forest.generate_rf_classifiers(xTr, yTr)
     models = []
     cwd = os.getcwd()
     os.chdir("data")
