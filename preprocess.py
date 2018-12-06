@@ -83,9 +83,8 @@ if __name__ == "__main__":
     xTr, xVer, yTr, yVer = train_test_split(X, Y, test_size=0.8)
 
     xTr = get_features(xTr)
-    data = pd.DataFrame(xTr)
-    print(data)
-    print("\n")
+    xVer = get_features(xVer)
+
 
     ### SVM ###
 
@@ -105,7 +104,8 @@ if __name__ == "__main__":
             model = pickle.loads(s)
             models.append(model)
     model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
-    print(model_scores)
+    print("model scores are: \n" + str(model_scores))
+    print("max accuracy was: " + str(max(model_scores)))
 
     #example of pandas to numpy conversion
     #print(X[0])  # 0 is the text column, indexed by column number
