@@ -25,6 +25,61 @@ def get_features(X):
     REPLY_TO_SID   = X[:, 6]
     ID             = X[:, 7]
     REPLY_TO_UID   = X[:, 8]
+    STATUS_SOURCE  = X[:, 9]
+    SCREEN_NAME    = X[:, 10]
+    RETWEET_COUNT  = X[:, 11]
+    IS_RETWEET     = X[:, 12]
+    RETWEETED      = X[:, 13]
+    LONGITUDE      = X[:, 14]
+    LATITUDE       = X[:, 15]
+    LABEL          = X[:, 16]
+    #print(STATUS_SOURCE)
+
+    t_word_count = number_of_hastags(TEXT)
+    t_num_words = tweet_length(TEXT)
+    t_num_hashtags = number_of_hastags(TEXT)
+    t_tag_scores = is_tagged(TEXT)                      # TODO: confirm with Neel
+    t_hashtags = has_hashtag(TEXT)                      # TODO: confirm with Neel
+    t_is_tweet_url = is_URL(TEXT)                       # TODO: confirm with Neel
+    t_is_favorited_tweet = is_favorited(FAVORITED)
+    t_is_trunc_tweet = is_trunc(TRUNCATED)
+    t_date, t_time = tweet_date_time(CREATED)
+    t_id = tweet_id(ID)
+    t_retweet_count = retweet_count(RETWEET_COUNT)
+    t_favorite_count = favorite_count(FAVORITE_COUNT)
+    t_sentiment_score = sentiment(TEXT)
+
+    xTr = np.matrix((t_word_count,
+                     t_num_words,
+                     t_num_hashtags,
+                     t_tag_scores,
+                     t_hashtags,
+                     t_is_tweet_url,
+                     t_is_favorited_tweet,
+                     t_is_trunc_tweet,
+                     t_date,
+                     t_time,
+                     t_id,
+                     t_retweet_count,
+                     t_favorite_count,
+                     t_sentiment_score)).T
+    return xTr
+
+def get_features_test(X):
+    """
+
+    :param X:
+    :return:
+    """
+    TEXT           = X[:, 0]
+    FAVORITED      = X[:, 1]
+    FAVORITE_COUNT = X[:, 2]
+    REPLY_TO_SN    = X[:, 3]
+    CREATED        = X[:, 4]
+    TRUNCATED      = X[:, 5]
+    REPLY_TO_SID   = X[:, 6]
+    ID             = X[:, 7]
+    REPLY_TO_UID   = X[:, 8]
     SCREEN_NAME    = X[:, 9]
     RETWEET_COUNT  = X[:, 10]
     IS_RETWEET     = X[:, 11]
@@ -65,18 +120,17 @@ def get_features(X):
 
 def predict_test(models, model_scores):
     cwd = os.getcwd()
-    print("cwd: " + cwd)
     os.chdir("data")
     xDF = pd.read_csv(filepath_or_buffer="test.csv")
     xDF = xDF.drop("id", 1)
     X = xDF.values
-    os.chdir("..")
-    xTe = get_features(X)
+    xTe = get_features_test(X)
     i = np.argmax(np.array(model_scores))
     best_model = models[i]
-    output = pd.DataFrame(best_model.predict(xTe))
-    print(output)
-    # with open("predictions.csv", "w") as fileHandle:
+    output = pd.DataFrame(best_model.predict(xTe), columns=['label'])
+    with open("predictions.csv", "w") as fileHandle:
+        output.to_csv(fileHandle)
+    os.chdir(cwd)
 
 
 if __name__ == "__main__":
