@@ -47,6 +47,7 @@ def get_features(X):
     t_id = tweet_id(ID)
     t_retweet_count = retweet_count(RETWEET_COUNT)
     t_favorite_count = favorite_count(FAVORITE_COUNT)
+    t_sentiment_score = sentiment(TEXT)
 
     xTr = np.matrix((t_word_count,
                      t_num_words,
@@ -60,7 +61,8 @@ def get_features(X):
                      t_time,
                      t_id,
                      t_retweet_count,
-                     t_favorite_count)).T
+                     t_favorite_count
+                     t_sentiment_score)).T
     return xTr
 
 

@@ -4,6 +4,25 @@ import json
 from urllib.request import urlopen
 import re
 from zlib import crc32
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+
+def sentiment(tweets):
+    """
+    param tweets: takes in the tweets text field
+    return n x 1 vector where the ith entry represents the positivity and negativity of the tweet itself
+    """
+
+    vals = np.zeros(tweets.shape[0])
+
+
+    analyser = SentimentIntensityAnalyzer()
+    for i in range(tweets.shape[0]):
+        sentence = tweets[i]
+        score = analyser.polarity_scores(sentence)
+        vals[i] = score["compound"]
+
+    return vals
 
 
 def is_favorited(favorited_column):
