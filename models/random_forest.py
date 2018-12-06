@@ -43,10 +43,19 @@ def evaluate_classifiers(models, xVer, yVer):
     outputs = []
     for model in models:
         output = model.predict(xVer)
-        similar = np.sum(output, yVer)
-        total = yVer.shape[0]
-        accuracy = similar / total
-        outputs.append((output, accuracy))
+        num_samples = yVer.shape[0]
+        print("output dims: " + str(output.shape))
+        print("yVer dims: " + str(yVer.shape))
+
+        similar = 0
+        for i in range(num_samples):
+            if output[i] == yVer[i]:
+                similar += 1
+
+        accuracy = similar / num_samples
+        print("accuracy is: " + str(accuracy) + "\n" * 2)
+        outputs.append(accuracy)
+    return outputs
 
 
 
