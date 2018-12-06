@@ -7,6 +7,14 @@ from zlib import crc32
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
+def has_quote_mark(tweet):
+    vals = np.zeros(tweet.shape[0])
+    for i in range(tweet.shape[0]):
+        v = tweet[i]
+        if '"' in list(v):
+            vals[i] = 1
+    return vals
+
 def sentiment(tweets):
     """
     param tweets: takes in the tweets text field

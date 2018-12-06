@@ -38,6 +38,7 @@ def get_features(X):
     LABEL          = X[:, 16]
     #print(STATUS_SOURCE)
 
+    t_quote_mark = has_quote_mark(TEXT)
     t_word_count = number_of_hastags(TEXT)
     t_num_words = tweet_length(TEXT)
     t_num_hashtags = number_of_hastags(TEXT)
@@ -52,20 +53,21 @@ def get_features(X):
     t_favorite_count = favorite_count(FAVORITE_COUNT)
     t_sentiment_score = sentiment(TEXT)
 
-    xTr = np.matrix((t_word_count,
-                     #t_num_words,
-                     t_num_hashtags,
-                     # t_tag_scores,
-                     # t_hashtags,
-                      t_is_tweet_url,
-                     # t_is_favorited_tweet,
-                     # t_is_trunc_tweet,
-                     # t_date,
-                      #t_time,
-                     # t_id,
-                      t_retweet_count,
-                      t_favorite_count,
-                      t_sentiment_score
+    xTr = np.matrix((t_quote_mark,
+                     t_word_count,       #pretty good .76
+                     #t_num_words,         #.69
+                     t_num_hashtags,       #.75
+                      #t_tag_scores,         #.56 very bad
+                      t_hashtags,            #.74
+                      t_is_tweet_url,          #.81 EXTREMELY GOOD
+                     #t_is_favorited_tweet,      # .56 bad
+                      #t_is_trunc_tweet,          # .56
+                     #t_date,                      #.57
+                      #t_time,                       #.57
+                      #t_id,                            #.56
+                      #t_retweet_count,                  #.56
+                      #t_favorite_count,                   #.55
+                      #t_sentiment_score  #pretty bad as a feature .57
                      )).T
     return xTr
 
@@ -91,6 +93,7 @@ def get_features_test(X):
     LONGITUDE      = X[:, 13]
     LATITUDE       = X[:, 14]
 
+    t_quote_mark = has_quote_mark(TEXT)
     t_word_count = capitalized_word_counts(TEXT)
     t_num_words = tweet_length(TEXT)
     t_num_hashtags = number_of_hastags(TEXT)
@@ -105,20 +108,21 @@ def get_features_test(X):
     t_favorite_count = favorite_count(FAVORITE_COUNT)
     t_sentiment_score = sentiment(TEXT)
 
-    xTr = np.matrix((t_word_count,
+    xTr = np.matrix((t_quote_mark,
+                     t_word_count,
                      #t_num_words,
                      t_num_hashtags,
                      #t_tag_scores,
-                     #t_hashtags,
+                     t_hashtags,
                      t_is_tweet_url,
                      #t_is_favorited_tweet,
                      #t_is_trunc_tweet,
                      #t_date,
                      #t_time,
                      #t_id,
-                     t_retweet_count,
-                     t_favorite_count,
-                     t_sentiment_score
+                     #t_retweet_count,
+                     #t_favorite_count,
+                     #t_sentiment_score #pretty bad as a feature .57
                      )).T
     return xTr
 
@@ -186,7 +190,7 @@ if __name__ == "__main__":
 
 
     ## LOGISTIC REGRESSION ##
-    models = [logistic_regression.generate_log_classifiers(xTr, yTr)] #made it a list
+    #models = [logistic_regression.generate_log_classifiers(xTr, yTr)] #made it a list
 
     ### SVM ###
 
@@ -194,18 +198,18 @@ if __name__ == "__main__":
     #models = svm.generate_svm_classifiers(xTr, yTr)
 
     ### Random Forest ###
-    # os.chdir(cwd)
-    # models = random_forest.generate_rf_classifiers(xTr, yTr) #UNCOMMENT THIS WHEN ADDING FEATURES
-    # models = []
-    # cwd = os.getcwd()
-    # os.chdir("data")
-    # os.chdir("random_forest_models")
-    # files = os.listdir(os.getcwd())
-    # for file in files:
-    #     with open(file, "rb") as fileHandle:
-    #         s = fileHandle.read()
-    #         model = pickle.loads(s)
-    #         models.append(model)
+    os.chdir(cwd)
+    models = random_forest.generate_rf_classifiers(xTr, yTr) #UNCOMMENT THIS WHEN ADDING FEATURES
+    models = []
+    cwd = os.getcwd()
+    os.chdir("data")
+    os.chdir("random_forest_models")
+    files = os.listdir(os.getcwd())
+    for file in files:
+        with open(file, "rb") as fileHandle:
+            s = fileHandle.read()
+            model = pickle.loads(s)
+            models.append(model)
     model_scores = random_forest.evaluate_classifiers(models, xVer, yVer)
     os.chdir(cwd)
 
