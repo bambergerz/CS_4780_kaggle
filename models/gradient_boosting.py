@@ -6,9 +6,9 @@ import os
 import pickle
 
 
-### Logistic Regression ###
+### GRADIENT BOOSTING ###
 
-def generate_log_classifiers(xTr, yTr):
+def generate_gb_classifiers(xTr, yTr):
     learning_rates = [0.05, 0.1, 0.25, 0.5, 0.75, 1]
     classifiers = []
     for learning_rate in learning_rates:
