@@ -101,9 +101,10 @@ def is_tagged(tweets):
         if match =="[]":
         	vals[i] = 0
         else:
-        	to_hash = "_".join(match)
-        	hashed_num = bytes_to_float(to_hash)
-        	vals[i] = hashed_num
+        	#to_hash = "_".join(match)
+        	#hashed_num = bytes_to_float(to_hash)
+        	#vals[i] = hashed_num
+            vals[i] = 1
     return vals
 
 def has_hashtag(tweets):
@@ -159,9 +160,9 @@ def tweet_time2(tweets):
         tweet = tweets[i]
         _, time = tweet.split()
         hour, minute = time.split(":")
-        val = (60 * int(hour)) + int(minute)
-        scaled = float(val)/1440
-        vals[i] = scaled
+        val = int(hour)/24
+        #scaled = float(val)/1440
+        vals[i] = val
     return vals
 
 
@@ -199,7 +200,7 @@ def is_1stperson(tweets):
 
         tweet = (tweets[i]).lower()
         list_tweet = tweet.split()
-        if ("i" in list_tweet or "we" in list_tweet):
+        if ("i" in list_tweet):
             vals[i] = 1
     return vals
 

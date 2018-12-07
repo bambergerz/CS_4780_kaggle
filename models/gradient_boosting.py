@@ -14,8 +14,8 @@ def generate_gb_classifiers(xTr, yTr):
     for learning_rate in learning_rates:
         gb = GradientBoostingClassifier(n_estimators=20, learning_rate = learning_rate,
         max_features=2, max_depth = 2, random_state = 0)
-        gb.fit(X_train_sub, y_train_sub)
-        classifiers.append(c)
+        gb.fit(xTr, yTr)
+        classifiers.append(gb)
     #pickle.dump(logisticRegr, "logisticRegression.model") COMMENTED OUT 11:50pm
     print("All done!!!")
     return classifiers

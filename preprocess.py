@@ -6,6 +6,7 @@ import pickle
 from sklearn.ensemble import RandomForestClassifier
 from models import svm
 from models import logistic_regression
+from models import gradient_boosting
 
 # Local imports
 from models import random_forest
@@ -78,12 +79,18 @@ def get_features(X):
     # t_has_exclamation
     # t_tag_scores,         #.56 very bad
     xTr = np.matrix((
-                        t_quote_mark,   #.63
-                        t_word_count,  # pretty good .76
-                        t_num_words,  # .69 #capitalized words
-                        t_num_hashtags,  # .75
-                        t_hashtags,  # .74
-                        t_is_tweet_url,  # .81 EXTREMELY GOOD
+                    t_quote_mark,  # .63
+                    t_word_count,  # pretty good .76
+                    t_num_words,  # .69 #capitalized words
+                    t_num_hashtags,  # .75
+                    t_hashtags,  # .74
+                    t_is_tweet_url,  # .81 EXTREMELY GOOD
+                    t_tweet_time_2,
+                    #t_has_exclamation,
+                    #t_is_first_person,
+                    #t_sentiment_score,
+                    # t_is_third_person
+                    # t_tag_scores
                      )).T
     return xTr
 
@@ -131,6 +138,8 @@ def get_features_test(X):
     t_neg_words = neg_words(TEXT)
     t_num_exclamation = number_of_exclamation(TEXT)
     t_has_exclamation = has_exclamation(TEXT)
+
+
     xTr = np.matrix((
             t_quote_mark,
             t_word_count,  # pretty good .76
@@ -138,6 +147,12 @@ def get_features_test(X):
             t_num_hashtags,  # .75
             t_hashtags,  # .74
             t_is_tweet_url,  # .81 EXTREMELY GOOD
+            t_tweet_time_2,
+            #t_has_exclamation,
+            #t_is_first_person,
+            #t_sentiment_score,
+            #t_is_third_person
+            #t_tag_scores
                          )).T
     return xTr
 
@@ -203,6 +218,9 @@ if __name__ == "__main__":
     xTr = get_features(xTr)
     xVer = get_features(xVer)
 
+
+    #Gradient Boosting
+    #models = gradient_boosting.generate_gb_classifiers(xTr,yTr)
 
     ## LOGISTIC REGRESSION ##
     #models = [logistic_regression.generate_log_classifiers(xTr, yTr)] #made it a list
