@@ -7,11 +7,32 @@ from zlib import crc32
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
+def neg_words(tweets):
+    # take in text
+
+    vals = np.zeros(len(tweets))
+    for i in range(len(tweets)):
+
+        tweet = (tweets[i]).lower()
+        list_tweet = tweet.split()
+        if ("crazy" in list_tweet or "weak" in list_tweet or "badly" in list_tweet):
+            vals[i] = 1
+    return vals
+
+
 def has_quote_mark(tweet):
     vals = np.zeros(tweet.shape[0])
     for i in range(tweet.shape[0]):
         v = tweet[i]
         if '"' in list(v):
+            vals[i] = 1
+    return vals
+
+def has_exclamation(tweet):
+    vals = np.zeros(tweet.shape[0])
+    for i in range(tweet.shape[0]):
+        v = tweet[i]
+        if '!' in list(v):
             vals[i] = 1
     return vals
 
@@ -124,16 +145,63 @@ def is_URL(tweets):
         	vals[i] = hashed_num
     return vals
 
-# class MyParser(HTMLParser):
-#     def __init__(self, output_list=None):
-#         HTMLParser.__init__(self)
-#         if output_list is None:
-#             self.output_list = []
-#         else:
-#             self.output_list = output_list
-#     def handle_starttag(self, tag, attrs):
-#         if tag == 'a':
-#             self.output_list.append(dict(attrs).get('href'))
+
+def tweet_time2(tweets):
+    #take in times
+    """
+
+    :param tweets: an n x 1 vector in which each entry i is a string of the form {military hour}:{minute}
+    representing the time at which tweet i was released.
+    :return: a  n x 1 vector in which each entry i represents the time in which tweet indexed i was tweeted.
+    """
+    vals = np.zeros(len(tweets))
+    for i in range(len(tweets)):
+        tweet = tweets[i]
+        _, time = tweet.split()
+        hour, minute = time.split(":")
+        val = (60 * int(hour)) + int(minute)
+        scaled = float(val)/1440
+        vals[i] = scaled
+    return vals
+
+
+def is_3rdperson(tweets):
+    # takes in text
+
+    vals = np.zeros(len(tweets))
+    for i in range(len(tweets)):
+        tweet = (tweets[i]).lower()
+        list_tweet = tweet.split()
+        if ("trump" in list_tweet or "donald" in list_tweet):
+            vals[i] = 1
+    return vals
+
+
+def join_or_tomorrow(tweets):
+    # take in text
+    vals = np.zeros(len(tweets))
+
+    for i in range(len(tweets)):
+
+        tweet = (tweets[i]).lower()
+        list_tweet = tweet.split()
+        if ("join" in list_tweet or "tomorrow" in list_tweet):
+            vals[i] = 1
+    return vals
+
+
+def is_1stperson(tweets):
+    # take in text
+
+    vals = np.zeros(len(tweets))
+
+    for i in range(len(tweets)):
+
+        tweet = (tweets[i]).lower()
+        list_tweet = tweet.split()
+        if ("i" in list_tweet or "we" in list_tweet):
+            vals[i] = 1
+    return vals
 
 
 

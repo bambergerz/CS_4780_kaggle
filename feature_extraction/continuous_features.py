@@ -37,6 +37,23 @@ def number_of_hastags(tweets):
     return (vals - np.mean(vals)) / np.var(vals)
 
 
+def number_of_exclamation(tweets):
+    """
+
+    :param tweets: n x 1 vector in which entry i represents the text of the i'th tweet. i.e., each entry is a string.
+    :return: n x 1 vector in which entry i represents the number of hashtags in the i'th tweet, normalized
+    """
+    vals = np.zeros(tweets.shape[0])
+    for i in range(tweets.shape[0]):
+        tweet = tweets[i]
+        #count1 = tweet.count("!")
+        #count2 = tweet.count(".")
+        #count3 = tweet.count("?")
+        count4 = tweet.count("\"")
+        vals[i] = count4
+    return vals / np.max(vals)
+    #(vals - np.mean(vals)) / np.var(vals)
+
 def tweet_length(tweets):
     """
     
